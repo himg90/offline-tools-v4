@@ -1,5 +1,7 @@
 import { recursivelyDecode } from './string-decoder.js';
 import JSONFormatter from 'json-formatter-js';
+import { prettyPrintJson } from 'pretty-print-json';
+import 'pretty-print-json/css/pretty-print-json.css';
 
 document.addEventListener('DOMContentLoaded', function() {
     // Navigation menu functionality
@@ -25,6 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const decodeButton = document.getElementById('decode-button');
     const encodedInput = document.getElementById('encoded-input');
     const decodedOutput = document.getElementById('decoded-output');
+    const jsonPrettyPrintOutput = document.getElementById('json-pretty-print-output');
     const exampleButtons = document.querySelectorAll('.example-btn');
 
     // Handle example buttons
@@ -44,13 +47,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
-            // Attempt to decode base64
+            // Attempt to decode
             const decodedText = recursivelyDecode(encodedText);
             const formatter = new JSONFormatter(decodedText);
             decodedOutput.innerHTML = ""; // Clear previous output
             decodedOutput.appendChild(formatter.render());
+
+            jsonPrettyPrintOutput.innerHTML = prettyPrintJson.toHtml(decodedText);
         } catch (error) {
-            decodedOutput.textContent = "Error: Invalid base64 string. " + error.message;
+            decodedOutput.textContent = "Error: " + error.message;
         }
     });
 });

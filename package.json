@@ -12,6 +12,7 @@
     "vite": "^6.3.1"
   },
   "dependencies": {
-    "json-formatter-js": "^2.5.23"
+    "json-formatter-js": "^2.5.23",
+    "pretty-print-json": "^3.0.4"
   }
 }
