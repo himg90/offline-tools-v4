@@ -1,13 +1,35 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal Decoder</title>
+    <link rel="stylesheet" href="./src/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <div class="sidebar">
+            <h1>Offline Tools</h1>
+            <ul class="nav-menu">
+                <li class="nav-item active" data-page="universal-decoder">Universal Decoder</li>
+                <!-- More menu items can be added here -->
+            </ul>
+        </div>
+        <div class="content">
+            <div id="universal-decoder" class="page active">
+                <h2>Universal Decoder</h2>
+                <div class="decoder-container">
+                    <textarea id="encoded-input" placeholder="Enter base64 encoded string here..."></textarea>
+                    <button id="decode-button">Decode</button>
+                    <div class="result-container">
+                        <h3>Result:</h3>
+                        <div id="decoded-output"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- More pages can be added here -->
+        </div>
+    </div>
+    <!-- <script type="module" src="script.js"></script> -->
+</body>
 </html>
