@@ -21,6 +21,14 @@
                 <div class="decoder-container">
                     <textarea id="encoded-input" placeholder="Enter base64 encoded string here..."></textarea>
                     <button id="decode-button">Decode</button>
+                    <div class="examples">
+                        <h3>Try these examples:</h3>
+                        <div class="example-buttons">
+                            <button class="example-btn" data-example='{"name":"Test User","age":30}'>Simple JSON</button>
+                            <button class="example-btn" data-example='SGVsbG8gV29ybGQ='>Base64 "Hello World"</button>
+                            <button class="example-btn" data-example='eyJ1c2VyIjp7ImRldGFpbHMiOnsiYWRkcmVzcyI6eyJzdHJlZXQiOiIxMjMgTWFpbiBTdCIsImNpdHkiOiJUZWNodmlsbGUifX19fQ=='>Nested JSON</button>
+                        </div>
+                    </div>
                     <div class="result-container">
                         <h3>Result:</h3>
                         <div id="decoded-output"></div>

@@ -25,7 +25,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const decodeButton = document.getElementById('decode-button');
     const encodedInput = document.getElementById('encoded-input');
     const decodedOutput = document.getElementById('decoded-output');
-    
+    const exampleButtons = document.querySelectorAll('.example-btn');
+
+    // Handle example buttons
+    exampleButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            encodedInput.value = button.dataset.example;
+            // Trigger the decode button click
+            decodeButton.click();
+        });
+    });
+
     decodeButton.addEventListener('click', function() {
         try {
             const encodedText = encodedInput.value.trim();
