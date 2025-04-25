@@ -1,4 +1,3 @@
-
 /**
  * Main function to recursively decode a string
  * @param {string} input - The encoded string to decode
@@ -6,7 +5,10 @@
  * @param {number} currentDepth - Current recursion depth (for internal use)
  * @returns {any} - The decoded result, could be string, object, array, etc.
  */
-export function recursivelyDecode(input, maxDepth = 10, currentDepth = 0) {
+export function recursivelyDecode(input, maxDepth = 10, currentDepth = 0, debug = false) {
+  if(debug) {
+    console.log(`[Depth ${currentDepth}] Input: ${input}`);
+  }
   // Prevent infinite recursion
   if (currentDepth >= maxDepth) {
     console.warn(`Maximum recursion depth (${maxDepth}) reached`);
@@ -15,6 +17,9 @@ export function recursivelyDecode(input, maxDepth = 10, currentDepth = 0) {
 
   // Skip if input is not a string or is empty
   if (typeof input !== 'string' || input.trim() === '') {
+    if(debug) {
+      console.log(`[Depth ${currentDepth}] Input is not a string or is empty`);
+    }
     return input;
   }
 
@@ -22,24 +27,30 @@ export function recursivelyDecode(input, maxDepth = 10, currentDepth = 0) {
     
     // Try to decode as base64
     const base64Decoded = tryDecodeBase64(input);
+    
     if (base64Decoded && base64Decoded !== input) {
-      console.log(`[Depth ${currentDepth}] Decoded base64`);
-      return recursivelyDecode(base64Decoded, maxDepth, currentDepth + 1);
+      if(debug) {
+        console.log(`[Depth ${currentDepth}] Base64 decoded: ${base64Decoded}`);
+      }
+      return recursivelyDecode(base64Decoded, maxDepth, currentDepth + 1, debug);
     }
 
     // Try to parse as JSON
     const jsonParsed = tryParseJson(input);
     if (jsonParsed !== undefined && jsonParsed !== input) {
-      console.log(`[Depth ${currentDepth}] Parsed JSON`);
+      if(debug) {
+        var stringified = JSON.stringify(jsonParsed);
+        console.log(`[Depth ${currentDepth}] JSON parsed: ${stringified}`);
+      }
       
       // If result is a string, continue decoding
       if (typeof jsonParsed === 'string') {
-        return recursivelyDecode(jsonParsed, maxDepth, currentDepth + 1);
+        return recursivelyDecode(jsonParsed, maxDepth, currentDepth + 1, debug);
       }
       
       // If result is an object or array, recursively decode its string values
       if (typeof jsonParsed === 'object' && jsonParsed !== null) {
-        return processObjectValues(jsonParsed, maxDepth, currentDepth + 1);
+        return processObjectValues(jsonParsed, maxDepth, currentDepth + 1, debug);
       }
       
       return jsonParsed;
@@ -53,6 +64,9 @@ export function recursivelyDecode(input, maxDepth = 10, currentDepth = 0) {
     }
 
     // No transformations worked, return the original input
+    if(debug) {
+      console.log(`[Depth ${currentDepth}] No transformations worked, returning original input: ${input}`);
+    }
     return input;
   } catch (error) {
     console.error(`Error at depth ${currentDepth}:`, error);
@@ -77,18 +91,20 @@ export function tryDecodeBase64(input) {
   }
 
   try {
-    
     // Use browser's atob for base64 decoding
     const decoded = atob(input);
     
     // Convert to UTF-8 string
-    const utf8String = new TextDecoder().decode(
-      new Uint8Array([...decoded].map(char => char.charCodeAt(0)))
-    );
+    const bytes = new Uint8Array([...decoded].map(char => char.charCodeAt(0)));
+    const utf8String = new TextDecoder().decode(bytes);
     
-    // Basic validation: if the decoded string is binary garbage, it's probably not valid base64
-    if (/[\x00-\x08\x0B\x0C\x0E-\x1F]/.test(utf8String)) {
-      return null;
+    // Simple ASCII validation: only accept strings that consist entirely of printable ASCII
+    // This covers codes 32-126 (space through ~)
+    for (let i = 0; i < utf8String.length; i++) {
+      const code = utf8String.charCodeAt(i);
+      if (code < 32 || code > 126) {
+        return null; // Non-ASCII or control character found, reject the result
+      }
     }
     
     return utf8String;
@@ -146,13 +162,13 @@ export function tryUnescapeJsonString(input) {
  * @param {number} currentDepth - Current recursion depth
  * @returns {object|array} - Processed object or array
  */
-function processObjectValues(obj, maxDepth, currentDepth) {
+function processObjectValues(obj, maxDepth, currentDepth, debug = false) {
   if (Array.isArray(obj)) {
     return obj.map(item => {
       if (typeof item === 'string') {
-        return recursivelyDecode(item, maxDepth, currentDepth);
+        return recursivelyDecode(item, maxDepth, currentDepth, debug);
       } else if (typeof item === 'object' && item !== null) {
-        return processObjectValues(item, maxDepth, currentDepth);
+        return processObjectValues(item, maxDepth, currentDepth, debug);
       }
       return item;
     });
@@ -160,9 +176,9 @@ function processObjectValues(obj, maxDepth, currentDepth) {
     const result = {};
     for (const key in obj) {
       if (typeof obj[key] === 'string') {
-        result[key] = recursivelyDecode(obj[key], maxDepth, currentDepth);
+        result[key] = recursivelyDecode(obj[key], maxDepth, currentDepth, debug);
       } else if (typeof obj[key] === 'object' && obj[key] !== null) {
-        result[key] = processObjectValues(obj[key], maxDepth, currentDepth);
+        result[key] = processObjectValues(obj[key], maxDepth, currentDepth, debug);
       } else {
         result[key] = obj[key];
       }
