@@ -56,3 +56,26 @@ npm run build
 - Works offline
 - No permissions required
 - Secure - all processing happens locally
+
+## Command Line Tools
+
+### File Decoder
+
+Decode files from the command line:
+
+```bash
+# Usage
+npm run decode-file <input-file> [output-file]
+
+# Example - Decode a file and save to default output (input-file.decoded.json)
+npm run decode-file encoded-data.txt
+
+# Example - Decode a file and save to specific output
+npm run decode-file encoded-data.txt decoded-result.json
+```
+
+This tool:
+- Reads encoded content from a file
+- Decodes it using the Universal Decoder
+- Pretty-prints the result (if it's JSON)
+- Saves the decoded content to a file
