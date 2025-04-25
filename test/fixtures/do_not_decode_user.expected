@@ -1,0 +1,10 @@
+{
+  "user": {
+    "name": "John Doe",
+    "email": "john@example.com",
+    "address": {
+      "city": "San Francisco","state": "CA", "zip": 94101
+    },
+    "roles": ["admin", "user"]
+  }
+}

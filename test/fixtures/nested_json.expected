@@ -1,0 +1,10 @@
+{
+  "user": {
+    "details": {
+      "address": {
+        "street": "123 Main St",
+        "city": "Techville"
+      }
+    }
+  }
+} 

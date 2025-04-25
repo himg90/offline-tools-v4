@@ -1,4 +1,4 @@
-import { recursivelyDecode, tryUnescapeJsonString } from './string-decoder.js';
+import { recursivelyDecode, tryUnescapeJsonString } from './../src/string-decoder.js';
 
 // Helper function to create test data
 function createTestData() {

@@ -1,0 +1,10 @@
+{
+  "level1": {
+    "level2": {
+      "level3": "Plain text at level 3",
+      "encoded": "Base64 at level 3"
+    },
+    "plainAtLevel2": "Plain text at level 2"
+  },
+  "plainAtLevel1": "Plain text at level 1"
+} 
